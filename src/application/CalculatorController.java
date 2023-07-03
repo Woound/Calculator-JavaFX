@@ -55,7 +55,6 @@ public class CalculatorController {
 	public void onNumberPressed(ActionEvent event) {
 		Button numberBtn = (Button) event.getSource();
 		currentVal = numberBtn.getText(); // Getting the single digit that is pressed.
-		
 
 		// Checking for an already existing decimal point.
 		if (!currentNumber.contains(".") || !currentVal.equals(".")) {
@@ -65,8 +64,6 @@ public class CalculatorController {
 		}
 
 		num1 = Double.parseDouble(currentNumber);
-		
-		
 
 	}
 
@@ -74,45 +71,12 @@ public class CalculatorController {
 	public void onOperatorPressed(ActionEvent event) {
 		Button operatorBtn = (Button) event.getSource();
 		operator = operatorBtn.getText(); // Getting the current selected operator.
-		
-		
-		displayCalculations = currentNumber + operator; // Add the current number and operator to the calculations display.
+
+		displayCalculations = currentNumber + operator; // Add the current number and operator to the calculations
+														// display.
 		calculations.setText(displayCalculations);
 
-		if (prevOperator.isEmpty() || prevOperator.equals(operator)) {
-			if (operator.equals("+")) {
-				total += num1;
-			} else if (operator.equals("-")) {
-				// The check below ensures that if the first value entered is to be subtracted from, it doesn't become a negative.
-				if (total == 0) {
-					total += num1;
-				} else {
-					total -= num1;
-				}
-			} else if (operator.equals(MULTIPLY.getText())) {
-				multiplicand = num1;
-				total = multiplicand * num2;
-			} else if (operator.equals(DIVIDE.getText())) {
-				divisor = num1;
-				if (num2 != 0) {
-					total = num2 / divisor;
-				}
-			}
-		} else { // If the new operator is different to the previous one, we want to complete the last calculation with the right operator before moving on.
-			if (prevOperator.equals("+")) {
-				total += num1;
-			} else if (prevOperator.equals("-")) {
-				total -= num1;
-			} else if (prevOperator.equals(MULTIPLY.getText())) {
-				multiplicand = num1;
-				total = multiplicand * num2;
-			} else if (prevOperator.equals(DIVIDE.getText())) {
-				divisor = num1;
-				if (num2 != 0) {
-					total = num2 / divisor;
-				}
-			}
-		}
+		doCalculations();
 
 		screen.setText(String.valueOf(total));
 
@@ -168,41 +132,7 @@ public class CalculatorController {
 
 	@FXML
 	public void onResultPressed() {
-
-		if (prevOperator.isEmpty() || prevOperator.equals(operator)) {
-			if (operator.equals("+")) {
-				total += num1;
-			} else if (operator.equals("-")) {
-				total -= num1;
-			}  else if (operator.equals(MULTIPLY.getText())) {
-				if (total == 0) {
-					total = num1 * num2;
-				} else {
-					multiplicand = total; // Since result was pressed, it marks the end of the current calculation, so we can make the multiplicand the total.
-					total = multiplicand * num2;
-				}
-			}
-		} else {
-			if (prevOperator.equals("+")) {
-				total += num1;
-			} else if (prevOperator.equals("-")) {
-				total -= num1;
-			} else if (prevOperator.equals(MULTIPLY.getText())) {
-				if (total == 0) { // If the calculation is only 2 numbers long, should just multiply num1 by num2.
-					total = num1 * num2;
-				} else { // Need this here as well to make sure if multiple numbers are being multiplied, the result is calculated correctly.
-					multiplicand = total; // Since result was pressed, it marks the end of the current calculation, so we can make the multiplicand the total.
-					total = multiplicand * num2;
-				} 
-			} else if (prevOperator.equals(DIVIDE.getText())) {
-				divisor = num1;
-				if (num2 != 0) {
-					total = num2 / divisor;
-				}
-			}
-		}
-		
-		
+		doCalculations();
 
 		screen.setText(String.valueOf(total));
 
@@ -217,6 +147,48 @@ public class CalculatorController {
 		num2 = 0;
 		displayCalculations = "";
 
+	}
+
+	public void doCalculations() {
+		if (prevOperator.isEmpty() || prevOperator.equals(operator)) {
+			if (operator.equals("+")) {
+				total += num1;
+			} else if (operator.equals("-")) {
+				if (total == 0) {
+					total += num1;
+				} else {
+					total -= num1;
+				}
+			} else if (operator.equals(MULTIPLY.getText())) {
+				if (total == 0) {
+					total = num1 * num2;
+				} else {
+					multiplicand = total; // Since result was pressed, it marks the end of the current calculation, so
+											// we can make the multiplicand the total.
+					total = multiplicand * num2;
+				}
+			}
+		} else {
+			if (prevOperator.equals("+")) {
+				total += num1;
+			} else if (prevOperator.equals("-")) {
+				total -= num1;
+			} else if (prevOperator.equals(MULTIPLY.getText())) {
+				if (total == 0) { // If the calculation is only 2 numbers long, should just multiply num1 by num2.
+					total = num1 * num2;
+				} else { // Need this here as well to make sure if multiple numbers are being multiplied,
+							// the result is calculated correctly.
+					multiplicand = total; // Since result was pressed, it marks the end of the current calculation, so
+											// we can make the multiplicand the total.
+					total = multiplicand * num2;
+				}
+			} else if (prevOperator.equals(DIVIDE.getText())) {
+				divisor = num1;
+				if (num2 != 0) {
+					total = num2 / divisor;
+				}
+			}
+		}
 	}
 
 }
