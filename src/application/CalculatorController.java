@@ -150,6 +150,19 @@ public class CalculatorController {
 
 			screen.setText(String.valueOf(total));
 			calculations.setText(displayCalculations);
+		} else if (action.equals(LOG.getText())) {
+			if (total == 0) {
+				total = Math.log10(num1);
+			}
+			screen.setText(String.valueOf(total));
+		} else if (action.equals(DEL.getText())) {
+			if (operator.isEmpty()) {
+				num1 = 0;
+				currentVal = "";
+				currentNumber = "";
+				displayCalculations = "";
+				calculations.setText(displayCalculations);
+			}
 		}
 	}
 
