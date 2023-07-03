@@ -1,0 +1,12 @@
+# Ignore compiled files
+bin/
+target/
+
+# Ignore IDE-specific files
+.classpath
+.project
+.settings/
+
+# Ignore sensitive information
+config.properties
+secrets.txt
